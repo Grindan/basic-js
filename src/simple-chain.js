@@ -1,32 +1,44 @@
-const { NotImplementedError } = require('../extensions/index.js');
+const ERROR_MSG = "You can't remove incorrect link!";
 
 /**
  * Implement chainMaker object according to task description
- * 
+ *
  */
 const chainMaker = {
-  getLength() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  },
-  addLink(/* value */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  },
-  removeLink(/* position */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  },
-  reverseChain() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  },
-  finishChain() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+    history: [],
+
+    getLength() {
+        return this.history.length;
+    },
+
+    addLink(value) {
+        this.history.push(`( ${value} )`);
+        return chainMaker;
+    },
+
+    removeLink(position) {
+        if (typeof position !== 'number' || position < 1 || position > this.history.length) {
+            this.history = [];
+            throw new Error(ERROR_MSG);
+        }
+
+        this.history.splice(position - 1, 1);
+
+        return chainMaker;
+    },
+
+    reverseChain() {
+        this.history.reverse();
+        return chainMaker;
+    },
+
+    finishChain() {
+        const result = this.history.join('~~');
+        this.history = [];
+        return result;
+    },
 };
 
 module.exports = {
-  chainMaker
+    chainMaker,
 };
